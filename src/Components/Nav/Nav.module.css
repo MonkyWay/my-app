@@ -1,0 +1,30 @@
+.nav {
+    grid-area: n;
+    background-color: darkgoldenrod;
+    padding: 20px;
+    font-size: 25px;
+}
+
+.item a {
+  color: white;
+    text-transform: uppercase;
+}
+
+.item a:hover {
+    color: aquamarine;
+}
+
+.item a.active {
+    color: gold;
+    text-decoration: underline;
+}
+
+.item {
+    color: white;
+    padding-bottom: 10px;
+}
+
+
+
+
+
