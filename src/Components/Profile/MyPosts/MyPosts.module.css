@@ -11,6 +11,7 @@ h3 {
 textarea {
     width: 200px;
     min-height: 50px;
+    resize: none;
 }
 
 button {
