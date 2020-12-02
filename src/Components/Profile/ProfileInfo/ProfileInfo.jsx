@@ -6,7 +6,7 @@ const ProfileInfo = (props) => {
     return (
         <div>
             <div>
-                <img
+                <img className={classes.background}
                     src="https://filedn.com/ltOdFv1aqz1YIFhf4gTY8D7/ingus-info/BLOGS/Photography-stocks3/stock-photography-slider.jpg"
                     alt="background"/>
             </div>
