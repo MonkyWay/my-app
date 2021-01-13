@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import './Components/null.css';
-import Header from "./Components/Header/Header";
 import Nav from "./Components/Nav/Nav";
 import News from "./Components/News/News";
 import Music from "./Components/Music/Music";
@@ -11,6 +10,7 @@ import DialogsContainer from "./Components/Dialogs/DialogsContainer";
 import UsersContainer from "./Components/Users/UsersContainer";
 import ProfileContainer from "./Components/Profile/ProfileContainer";
 import HeaderContainer from "./Components/Header/HeaderContainer";
+import Login from "./Components/Login/Login";
 
 const App = (props) => {
     return (
@@ -30,6 +30,8 @@ const App = (props) => {
                            render = {() => <UsersContainer />} />
                     <Route path = '/settings'
                            render = {() => <Settings />} />
+                    <Route path = '/login'
+                           render = {() => <Login />} />
                 </div>
             </div>
     )
