@@ -6,13 +6,17 @@ import {maxLengthCreator, required} from "../../../utils/validators/validators";
 import {Textarea} from "../../common/FormsControls/FormsControls";
 
 const MyPosts = (props) => {
-    let postsElements = props.posts.map(p => <Post message = {p.message}
-                                                   likes = {p.likesCount}
-                                                   id = {p.id} />);
+
+
+    let postsElements = [...props.posts].reverse().map(p => <Post key = {p.id}
+                                                                  message = {p.message}
+                                                                  likes = {p.likesCount}
+                                                                  id = {p.id} />);
 
     let onAddPost = (values) => {
         props.addPost(values.newPostText)
     }
+    console.log('RENDER');
 
     return (
         <div className = {classes.profile}>
@@ -23,14 +27,14 @@ const MyPosts = (props) => {
             </div>
         </div>
     )
-}
+};
 
-const maxLength20 = maxLengthCreator(20);
+const maxLength100 = maxLengthCreator(100);
 
 const AddNewPostForm = (props) => {
     return <form onSubmit = {props.handleSubmit}>
         <div>
-            <Field validate={[required, maxLength20]}
+            <Field validate = {[required, maxLength100]}
                    component = {Textarea}
                    placeholder = 'Enter your post'
                    name = 'newPostText' />

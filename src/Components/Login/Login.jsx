@@ -1,6 +1,6 @@
 import React from "react";
-import {Field, reduxForm} from "redux-form";
-import {Input} from "../common/FormsControls/FormsControls";
+import {reduxForm} from "redux-form";
+import {createField, Input} from "../common/FormsControls/FormsControls";
 import {required} from "../../utils/validators/validators";
 import {connect} from "react-redux";
 import {login, logout} from "../../redux/authReducer";
@@ -9,7 +9,7 @@ import style from "./../common/FormsControls/FormsControls.module.css"
 
 const Login = (props) => {
     const onSubmit = (formData) => {
-        props.login(formData.email, formData.password, formData.rememberMe);
+        props.login(formData.email, formData.password, formData.rememberMe, formData.captcha);
     }
 
     if (props.isAuth) {
@@ -18,32 +18,21 @@ const Login = (props) => {
 
     return <div>
         <h1>Login</h1>
-        <LoginReduxForm onSubmit = {onSubmit} />
+        <LoginReduxForm onSubmit = {onSubmit} captchaUrl={props.captchaUrl} />
     </div>
 }
 
-const LoginForm = (props) => {
-    return <form onSubmit = {props.handleSubmit}>
-        <div>
-            <Field placeholder = "Email"
-                   name = {"email"}
-                   component = {Input}
-                   validate = {[required]} />
-        </div>
-        <div>
-            <Field placeholder = "Password"
-                   type = {"password"}
-                   name = {"password"}
-                   component = {Input}
-                   validate = {[required]} />
-        </div>
-        <div>
-            <Field component = {Input}
-                   name = {"rememberMe"}
-                   type = "checkbox" /> remember me
-        </div>
-        {props.error && <div className = {style.formSummaryError}>
-            {props.error}
+const LoginForm = ({handleSubmit, error, captchaUrl}) => {
+    return <form onSubmit = {handleSubmit}>
+        {createField("Email", "email", Input, [required])}
+        {createField("Password", "password", Input, [required], {type: "password"})}
+        {createField(null, "rememberMe", Input, null, {type: "checkbox"}, "remember me")}
+
+        {captchaUrl && <img src={captchaUrl} />}
+        {captchaUrl && createField("Symbols from image", "captcha", Input, [required])}
+
+        {error && <div className = {style.formSummaryError}>
+            {error}
         </div>}
         <div>
             <button>Login</button>
@@ -54,6 +43,7 @@ const LoginForm = (props) => {
 const LoginReduxForm = reduxForm({form: 'login'})(LoginForm);
 
 const mapStateToProps = (state) => ({
+    captchaUrl: state.auth.captchaUrl,
     isAuth: state.auth.isAuth,
 });
 
