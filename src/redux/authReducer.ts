@@ -1,4 +1,4 @@
-import {ResultCodeForCapctha} from "../api/api";
+import {ResultCodeForCapctha, ResultCodeForCapcthaEnum, ResultCodesEnum} from "../api/api";
 import {stopSubmit} from "redux-form";
 import {authAPI} from "../api/auth-api";
 import {securityAPI} from "../api/security-api";
@@ -73,21 +73,20 @@ export const getAuthUserData = () => async (dispatch: any) => {
     }
 };
 
-export const login = (email: string, password: string, rememberMe: boolean, captcha: string) => async (dispatch: any) => {
-
-    const loginData = await authAPI.login(email, password, rememberMe, captcha);
-
-    if (loginData.resultCode === 0) {
-        //success, get auth data
-        dispatch(getAuthUserData());
+export const login = (email: string, password: string, rememberMe: boolean, captcha: string): ThunkType => async (dispatch) => {
+    let data = await authAPI.login(email, password, rememberMe, captcha);
+    if (data.resultCode === ResultCodesEnum.Success) {
+        // success, get auth data
+        dispatch(getAuthUserData())
     } else {
-        if (loginData.resultCode === ResultCodeForCapctha.CaptchaIsRequired) {
+        if (data.resultCode === ResultCodeForCapcthaEnum.CaptchaIsRequired) {
             dispatch(getCaptchaUrl());
         }
-        let message = loginData.messages.length > 0 ? loginData.messages[0] : "Some error";
-        dispatch(stopSubmit("login", {_error: message}))
+
+        let message = data.messages.length > 0 ? data.messages[0] : "Some error";
+        dispatch(stopSubmit("login", {_error: message}));
     }
-};
+}
 
 export const logout = () => async (dispatch: any) => {
     const response = await authAPI.logout();
@@ -105,3 +104,7 @@ export const getCaptchaUrl = () => async (dispatch: any) => {
 };
 
 export default authReducer;
+
+export type InitialStateType = typeof initialState;
+type ActionsType = InferActionsTypes<typeof actions>
+type ThunkType = BaseThunkType<ActionsType | FormAction>
